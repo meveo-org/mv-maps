@@ -24,6 +24,7 @@ export class MvMaps extends LitElement {
     super();
     this.map = null;
     this.selected = [];
+    this.resizeEvent = null;
   }
 
   render() {
@@ -48,8 +49,7 @@ export class MvMaps extends LitElement {
         pointFormat: "{point.name}",
       },
       mapNavigation: {
-        enabled: true,
-        enableDoubleClickZoom: false,
+        enabled: false,
       },
       series: [
         {
@@ -81,6 +81,18 @@ export class MvMaps extends LitElement {
     if (this.selected.length > 0) {
       this.selectCountries();
     }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.resizeEvent = document.createEvent("HTMLEvents");
+    this.resizeEvent.initEvent("resize", true, false);
+    document.addEventListener("page-resize", this.triggerResize);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener("page-resize", this.triggerResize);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -118,6 +130,12 @@ export class MvMaps extends LitElement {
     this.selected.forEach((country) => {
       this.map.get(country.id).select(true, true);
     });
+  };
+
+  triggerResize = () => {
+    setTimeout(() => {
+      document.dispatchEvent(this.resizeEvent);
+    }, 200);
   };
 }
 
