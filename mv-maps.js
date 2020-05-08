@@ -49,7 +49,12 @@ export class MvMaps extends LitElement {
         pointFormat: "{point.name}",
       },
       mapNavigation: {
-        enabled: false,
+        buttonOptions: {
+          alignTo: "spacingBox",
+          verticalAlign: "bottom",
+        },
+        enabled: true,
+        enableDoubleClickZoom: false,
       },
       series: [
         {
@@ -78,8 +83,9 @@ export class MvMaps extends LitElement {
         },
       ],
     });
+
     if (this.selected.length > 0) {
-      this.selectCountries();
+      this.toggleCountries(this.selected, true);
     }
   }
 
@@ -98,7 +104,18 @@ export class MvMaps extends LitElement {
   attributeChangedCallback(name, oldValue, newValue) {
     super.attributeChangedCallback(name, oldValue, newValue);
     if (name === "selected") {
-      this.selectCountries();
+      const previousCountries = JSON.parse(oldValue);
+      const currentCountries = JSON.parse(newValue);
+      const deselectedCountries = !!oldValue
+        ? previousCountries.filter(
+            (value) =>
+              currentCountries.findIndex(
+                (selected) => selected.id === value.id
+              ) < 0
+          )
+        : [];
+      this.toggleCountries(currentCountries, true);
+      this.toggleCountries(deselectedCountries, false);
     }
   }
 
@@ -110,7 +127,6 @@ export class MvMaps extends LitElement {
     if (selected) {
       this.selected = [...this.selected, { id, name }];
     } else {
-      this.map.get(country.id).select(selected, true);
       const selectedIndex = this.selected.findIndex(
         (selectedCountry) => selectedCountry.id === id
       );
@@ -126,10 +142,12 @@ export class MvMaps extends LitElement {
     );
   };
 
-  selectCountries = () => {
-    this.selected.forEach((country) => {
-      this.map.get(country.id).select(true, true);
-    });
+  toggleCountries = (countries, isSelected) => {
+    if (!!this.map) {
+      countries.forEach((country) => {
+        this.map.get(country.id).select(isSelected, true);
+      });
+    }
   };
 
   triggerResize = () => {

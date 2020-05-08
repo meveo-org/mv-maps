@@ -14,6 +14,20 @@ export class MvMapsDemo extends LitElement {
         --mv-maps-width: 900px;
         --mv-maps-height: 600px;
       }
+
+      pre {
+        margin: 20px;
+        padding: 20px 20px 0 20px;
+        border: 1px solid black;
+        height: 200px;
+        width: 300px;
+        overflow: auto;
+      }
+
+      .maps-demo {
+        display: flex;
+        flex-direction: row;
+      }
     `;
   }
 
@@ -24,10 +38,20 @@ export class MvMapsDemo extends LitElement {
 
   render() {
     return html`
-      <mv-maps
-        .selected="${this.countries}"
-        @update-countries="${this.updateCountries}"
-      ></mv-maps>
+      <div class="maps-demo">
+        <mv-maps
+          .selected="${this.countries}"
+          @update-countries="${this.updateCountries}"
+        ></mv-maps>
+        ${this.countries && this.countries.length > 0
+          ? html`
+              <div>
+                <h2>Countries selected:</h2>
+                <pre>${JSON.stringify(this.countries, null, 2)}</pre>
+              </div>
+            `
+          : html``}
+      </div>
     `;
   }
 
