@@ -93,12 +93,13 @@ export class MvMaps extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     document.addEventListener("page-resize", this.triggerResize);
-    window.onresize = this.triggerResize;
+    window.addEventListener("resize", this.triggerResize);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     document.removeEventListener("page-resize", this.triggerResize);
+    window.removeEventListener("resize", this.triggerResize);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
