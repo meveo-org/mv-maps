@@ -8,6 +8,7 @@ export class MvMaps extends LitElement {
     return {
       map: { type: Object, attribute: false, reflect: true },
       selected: { type: Array, attribute: true, reflect: true },
+      resizeDelay: { type: Number, attribute: "resize-delay", reflect: true },
     };
   }
 
@@ -24,7 +25,7 @@ export class MvMaps extends LitElement {
     super();
     this.map = null;
     this.selected = [];
-    this.resizeEvent = null;
+    this.resizeDelay = 150;
   }
 
   render() {
@@ -91,9 +92,8 @@ export class MvMaps extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    this.resizeEvent = document.createEvent("HTMLEvents");
-    this.resizeEvent.initEvent("resize", true, false);
     document.addEventListener("page-resize", this.triggerResize);
+    window.onresize = this.triggerResize;
   }
 
   disconnectedCallback() {
@@ -152,8 +152,11 @@ export class MvMaps extends LitElement {
 
   triggerResize = () => {
     setTimeout(() => {
-      document.dispatchEvent(this.resizeEvent);
-    }, 200);
+      this.map.setSize(1, 1);
+      setTimeout(() => {
+        this.map.setSize(null, null);
+      }, this.resizeDelay);
+    }, 0);
   };
 }
 
