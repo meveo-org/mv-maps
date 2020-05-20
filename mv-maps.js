@@ -8,6 +8,7 @@ export class MvMaps extends LitElement {
     return {
       map: { type: Object, attribute: false, reflect: true },
       selected: { type: Array, attribute: true, reflect: true },
+      resizeWidth: { type: Number, attribute: "resize-width", reflect: true },
       resizeDelay: { type: Number, attribute: "resize-delay", reflect: true },
     };
   }
@@ -25,7 +26,8 @@ export class MvMaps extends LitElement {
     super();
     this.map = null;
     this.selected = [];
-    this.resizeDelay = 150;
+    this.resizeWidth = 1;
+    this.resizeDelay = 160;
   }
 
   render() {
@@ -65,6 +67,7 @@ export class MvMaps extends LitElement {
           mapData,
           joinBy: ["hc-key", "id"],
           cursor: "pointer",
+          animation: false,
           point: {
             events: {
               click: this.toggleCountry,
@@ -152,12 +155,10 @@ export class MvMaps extends LitElement {
   };
 
   triggerResize = () => {
+    this.map.setSize(this.resizeWidth);
     setTimeout(() => {
-      this.map.setSize(1, 1);
-      setTimeout(() => {
-        this.map.setSize(null, null);
-      }, this.resizeDelay);
-    }, 0);
+      this.map.setSize(null);
+    }, this.resizeDelay);
   };
 }
 
