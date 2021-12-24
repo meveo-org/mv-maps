@@ -1,0 +1,22 @@
+{
+  "name": "@meveo-org/mv-maps",
+  "version": "1.0.0",
+  "description": "MvMaps is a map component (based on lit-element) that renders a map with selectable countries.  It makes use of [Highcharts Maps](https://www.highcharts.com/products/maps/) to render the map",
+  "main": "mv-maps.js",
+  "scripts": {
+    "serve": "es-dev-server --node-resolve --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meveo-org/mv-maps.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/meveo-org/mv-maps/issues"
+  },
+  "homepage": "https://github.com/meveo-org/mv-maps#readme",
+  "devDependencies": {
+    "es-dev-server": "^1.46.1"
+  }
+}
