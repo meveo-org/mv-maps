@@ -1,4 +1,4 @@
-import { LitElement, html, css } from "lit-element";
+import { LitElement, html, css } from "lit";
 import Highcharts from "./js/es-modules/masters/highmaps.src.js";
 import { WORLD_MAP } from "./js/world-map.js";
 import { COUNTRIES } from "./js/countries.js";
